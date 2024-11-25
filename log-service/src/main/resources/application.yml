@@ -1,0 +1,42 @@
+spring:
+  main:
+    banner-mode: off
+    web-application-type: none
+    # 添加这个配置防止应用自动退出
+    allow-circular-references: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ping_pong_db
+    username: postgres
+    password: ojreakzv
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: log-service-producer-group
+  consumer:
+    group: ping-log-consumer-group
+    topic: PING_LOG_TOPIC
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.example.pingpong.logservice: DEBUG
+    org.apache.rocketmq: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    name: log-service.log

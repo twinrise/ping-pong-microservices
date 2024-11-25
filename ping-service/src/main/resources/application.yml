@@ -1,0 +1,40 @@
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+
+app:
+  service:
+    name: ${app.service.name:ping-service}  # 默认值为 ping-service
+
+logging:
+  level:
+    root: INFO
+    com.example.pingpong: DEBUG
+  file:
+    name: logs/${app.service.name}.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Pong Service Configuration
+pong-service:
+  url: http://localhost:8081/
+  endpoints:
+    pong: /pong
+  retry:
+    max-attempts: 3
+    initial-backoff: 1000
+
+# RocketMQ Configuration
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: ping-producer-group
+
+# Rate Limiter Configuration
+rate-limit:
+  max-requests: 2
+  time-window: 1
+  file:
+    path: ./rate-limit.lock

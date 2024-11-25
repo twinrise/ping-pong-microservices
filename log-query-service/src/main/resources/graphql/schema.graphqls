@@ -1,0 +1,48 @@
+# 添加 DateTime 标量类型
+scalar DateTime
+
+type Query {
+    # 分页查询日志
+    logs(
+        serviceName: String
+        status: String
+        responseStatus: String
+        startTime: String
+        endTime: String
+        page: Int = 0
+        size: Int = 10
+    ): LogPage!
+
+    # 根据状态查询日志
+    logsByStatus(status: String!): [Log]!
+
+    # 根据服务名称查询日志
+    logsByServiceName(serviceName: String!): [Log]!
+
+    # 根据时间范围查询日志
+    logsByTimeRange(startTime: String!, endTime: String!): [Log]!
+
+    # 获取所有不同的服务名称
+    uniqueServiceNames: [String]!
+}
+
+type Log {
+    id: ID!
+    serviceName: String!
+    instanceId: String!
+    processId: String!
+    requestTime: String!
+    status: String!
+    errorMessage: String
+    response: String
+    responseMessage: String
+    responseStatus: String
+}
+
+type LogPage {
+    content: [Log]!
+    totalPages: Int!
+    totalElements: Int!
+    size: Int!
+    number: Int!
+}

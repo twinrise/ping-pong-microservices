@@ -1,0 +1,74 @@
+server:
+  port: 8082
+
+spring:
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ping_pong_db
+    username: postgres
+    password: ojreakzv
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  
+  # GraphQL Configuration
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      printer:
+        enabled: true
+    cors:
+      allowed-origins: "*"
+    path: /graphql
+    websocket:
+      path: /graphql
+
+  # Cache Configuration
+  cache:
+    type: hazelcast
+    hazelcast:
+      config: classpath:hazelcast.xml
+
+# Hazelcast Configuration
+hazelcast:
+  network:
+    port: 5701
+    port-auto-increment: true
+    join:
+      multicast:
+        enabled: false
+      tcp-ip:
+        enabled: true
+        member-list:
+          - localhost
+
+# Cache Settings
+cache:
+  logs:
+    ttl: 300  # 5 minutes
+    max-size: 1000
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.example.pingpong.logquery: DEBUG
+    org.springframework.cache: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: log-query-service.log
